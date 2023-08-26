@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    
+    <title>Frontend Mentor | Tip calculator app</title>
+
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+    <style>
+        :root{
+            --Strong-cyan: hsl(172, 67%, 45%);
+            --Very-dark-cyan: hsl(183, 100%, 15%);
+            --Dark-grayish-cyan: hsl(186, 14%, 43%);
+            --Grayish-cyan: hsl(184, 14%, 56%);
+            --Light-grayish-cyan: hsl(185, 41%, 84%);
+            --Very-light-grayish-cyan: hsl(189, 41%, 97%);
+            --White: hsl(0, 0%, 100%);
+        }
+        html{
+            box-sizing:  border-box;               
+        }    
+        body,html{
+            background-color: var(--Light-grayish-cyan);
+            font-family: 'Space Mono', monospace;
+            display: flex;
+            flex-direction:  column;         
+     
+        }
+        p{
+            font-size: 16px;
+        }      
+        *,*::before,*::after{
+            text-align: center;
+            box-sizing: inherit;
+            margin: 0;
+            padding: 0;
+        }
+        header{
+            margin: 50px 0 35px;
+        }
+        main{
+            background-color: var(--White);
+            border-radius: 25px 25px 0 0;
+            padding: 25px;
+            max-width: 550px;
+            margin: 0 auto;
+            width: 100%;
+
+        }
+        .calculator h2{
+            color: var(--Dark-grayish-cyan);
+            text-align: left;
+            font-size: 16px;
+            margin-bottom: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+      
+        .calculator h2 span{
+            color: rgb(197, 58, 58);
+        }
+        .calculator {
+            padding: 7px ;
+            display: flex;
+            flex-direction: column;
+            gap: 31px;
+        }
+        .inputs-container{
+            background-color: var(--Very-light-grayish-cyan);
+            display: flex;
+            border: 2px solid var(--Very-light-grayish-cyan);
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 20px ;
+            border-radius: 5px;
+        }
+        .inputs-container:hover{
+            cursor: pointer;
+            border-color: var(--Strong-cyan);
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+        .inputs-container input{      
+            font-size: 25px;
+            font-weight: 700;
+            width: 90%;
+            color: var(--Very-dark-cyan);
+            font-family: 'Space Mono', monospace;
+            background-color: transparent;
+            border: none;
+            text-align: right;
+            outline: none;
+        }
+        .buttons-container{
+            margin: 17px 0 1px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 15px
+        }
+        .buttons-container button,
+        .buttons-container input{
+            width: 100%;
+            padding: 4px;
+            font-size: 25px;
+            border-radius: 5px;
+            border: none;
+            font-weight: 700;
+            font-family: 'Space Mono', monospace;
+        }
+        .buttons-container button{
+            background-color: var(--Very-dark-cyan);
+            border: 2px solid var(--Very-dark-cyan);
+            color: var(--White);
+        }
+        .buttons-container button:hover{
+            background-color: var(--Strong-cyan);
+            border: 2px solid var(--Strong-cyan);
+            color: var(--Very-dark-cyan);
+            cursor: pointer;
+        }
+        .buttons-container button.selected{
+            background-color: var(--Strong-cyan);
+            border: 2px solid var(--Strong-cyan);
+            color: var(--Very-dark-cyan);
+            cursor: pointer;
+        }
+        .buttons-container input{
+            background-color: var(--Very-light-grayish-cyan);
+            border: 2px solid var(--Very-light-grayish-cyan);
+            color: var(--Very-dark-cyan);
+            text-align: right;
+            padding: 4px 15px;
+            outline-color: var(--Strong-cyan);
+         
+        }
+        .buttons-container input::placeholder{
+            color: var(--Dark-grayish-cyan);
+        }
+        .buttons-container input:hover{
+            border: 2px solid var(--Strong-cyan);
+        }
+        .buttons-container input.selected{
+            border: 2px solid var(--Strong-cyan);
+        }
+        .results-container{
+            background-color: var(--Very-dark-cyan);
+            padding: 15px 20px 20px;
+            display: flex;          
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 15px;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        .results{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .result{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .result h3{
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            align-items: flex-start;
+            font-size: 18px;
+            color: var(--White);
+        }
+        .result h3 span{
+            font-size: 14px;
+            color: var(--Grayish-cyan);
+        }
+        .result p{
+            font-size: 35px;
+            color: var(--Strong-cyan);
+        }
+        
+        .btn-reset{
+            cursor: pointer;
+            width: 100%;
+            padding: 13px 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--Very-dark-cyan);
+            background-color: var(--Strong-cyan);
+            border: none;
+            border-radius: 5px;
+            text-transform: uppercase;
+        }
+        @media (min-width: 768px) {
+            .calculator h2{
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            body{
+                gap: 40px;
+            }
+            main{
+                width: 95%;
+                max-width: 1000px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                border-radius: 25px;
+            }
+            .results-container{
+                padding: 45px;
+                margin: 0;
+                gap: 100px;
+            }
+            .results{
+                gap: 40px;
+                padding: 0;
+            }
+            .result p{
+                font-size: 45px;
+              
+            }
+            .buttons-container{
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows:  1fr 1fr;
+            }
+        }
+        
+        .inactive{
+            background-color: hsla(183, 74%, 38%, 0.185);
+            cursor: auto;
+        }
+        
+        .error{
+            border: 2px solid rgb(197, 58, 58) !important;
+        }
+        .hidden{
+            display: none;
+        }
+       
+    </style>
+</head>
+<body>
+    <header>
+        <img src="./images/logo.svg" alt="logo">
+    </header>
+    <main>
+        <form class="calculator" novalidate>           
+            <div class="bill-container">
+                <h2>Bill</h2>
+                <div class="inputs-container">
+                    <img class="icon" src="./images/icon-dollar.svg" alt="icon-dollar">
+                    <input type="number" name="bill-input" id="bill-input" value="0">
+                </div>
+            </div>
+            <div class="tip-container">
+                <h2>Select Tip%</h2>
+                <div class="buttons-container">
+                    <button class="percentage-button selected" value="5">5%</button>
+                    <button class="percentage-button" value="10" >10%</button>
+                    <button value="15" class="percentage-button" >15%</button>
+                    <button class="percentage-button" value="25" >25%</button>
+                    <button class="percentage-button" value="50">50%</button>
+                    <input type="number" id="custom-input" placeholder="Custom" min="1" maxlength="2" max="99">
+                </div>
+            </div>
+            <div>
+                <h2>Number of People
+                    <span class="error-text hidden">Can't be zero</span>
+                </h2>
+                <div class="inputs-container">
+                    <img class="icon" src="./images/icon-person.svg" alt="icon-dollar">
+                    <input type="text" value="0" class="people-input" >
+                </div>
+            </div>
+        </form>
+        <section class="results-container">
+            <div class="results">
+                <div class="result">   
+                    <h3 >
+                        Tip Amount<span>/ person</span>
+                    </h3>  
+                    <p class="amount-person">
+                        $0.00
+                    </p>                 
+                </div>
+                <div class="result">
+                    <h3 >
+                        Total
+                        <span>/ person</span>
+                    </h3>     
+                    <p class="total-person">
+                        $0.00
+                    </p>     
+                </div>
+            </div>
+            <button class="btn-reset">Reset</button>
+        </section>
+    </main>
+    <script>
+       const form = document.querySelector('.calculator');
+        const billInput = document.querySelector('#bill-input');
+        const peopleInput = document.querySelector('.people-input');
+        const buttonsTip = document.querySelectorAll('.percentage-button');   
+        const customInput = document.querySelector('#custom-input');
+        const btnReset = document.querySelector('.btn-reset');
+        const resultTipAmount = document.querySelector('.amount-person');
+        const resultTotal = document.querySelector('.total-person');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+        });
+
+        billInput.addEventListener('input', calculate);
+        peopleInput.addEventListener('input', validatePeopleInput);
+        btnReset.addEventListener('click', resetForm);
+        customInput.addEventListener('input', calculate);
+        customInput.addEventListener('click', handleCustomInputClick);
+        buttonsTip.forEach(button => button.addEventListener('click', handleTipButtonClick));
+
+        function calculate() {
+            const bill = parseFloat(billInput.value);
+            const tip = parseFloat(getSelectedTipValue() || 0);
+            const people = parseInt(peopleInput.value);
+
+            if (!isNaN(bill) && !isNaN(tip) && !isNaN(people) && people > 0) {
+                const tipTotal = bill * tip / 100;
+                const tipPerson = tipTotal / people;
+                const totalPerson = (bill + tipTotal) / people;
+
+                resultTipAmount.textContent = `$${tipPerson.toFixed(2)}`;
+                resultTotal.textContent = `$${totalPerson.toFixed(2)}`;
+            }
+        }
+
+        function validatePeopleInput() {
+            if (parseInt(peopleInput.value) === 0) {
+                showError();
+            } else {
+                hideError();
+                calculate();
+            }
+        }
+
+        function showError() {
+            peopleInput.parentElement.classList.add('error');
+            document.querySelector('.error-text').classList.remove('hidden');
+            setTimeout(() => {
+                peopleInput.parentElement.classList.remove('error');
+                document.querySelector('.error-text').classList.add('hidden');   
+            }, 4000);
+        }
+
+        function hideError() {
+            peopleInput.parentElement.classList.remove('error');
+            document.querySelector('.error-text').classList.add('hidden');
+        }
+
+        function resetForm() {
+            form.reset();
+            removeActive();
+            btnReset.classList.add('inactive');
+            document.querySelector('.percentage-button').classList.add('selected');
+            resultTipAmount.textContent = `$0.00`; 
+            resultTotal.textContent = `$0.00`; 
+        }
+
+        function handleCustomInputClick(e) {
+            if (!customInput.classList.contains('selected')) {
+                removeActive();
+                customInput.classList.add('selected');
+            }
+        }
+
+        function handleTipButtonClick(e) {
+            removeActive();
+            e.target.classList.add('selected');
+            calculate();
+        }
+
+        function getSelectedTipValue() {
+            return document.querySelector('.selected').value || 0;
+        }
+
+        function removeActive() {
+            buttonsTip.forEach(button => {
+                button.classList.remove('selected');
+            });
+            customInput.classList.remove('selected');
+            customInput.value = '';
+        }
+    </script>
+</body>
+</html>
